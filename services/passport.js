@@ -8,6 +8,22 @@ const keys = require('../config/keys');
 // this is the model that can be used to create an instance of User
 const User = mongoose.model('users');
 
+// serializeUser add's on an identifying piece of code
+// so we can identify the user when they try and interact with out app
+// something to be used as a cookie
+passport.serializeUser((user, done) => {
+	// this is not the 'profile.id'
+	// after the user is signed in we only care about the mongo id
+	// this is a shortcut to the id added by mongodb
+	done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+	User.findById(id).then(user => {
+		done(null, user);
+	});
+});
+
 passport.use(
 	new GoogleStrategy(
 		{
