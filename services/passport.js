@@ -29,7 +29,13 @@ passport.use(
 		{
 			clientID: keys.googleClientID,
 			clientSecret: keys.googleClientSecret,
-			callbackURL: '/auth/google/callback'
+			// heroku uses a proxy
+			// GoogleStrategy will not work with heroku on this callbackURL
+			// due to a conflicting http/https issue
+			// unless you set proxy to true
+			// or hard code it as https
+			callbackURL: '/auth/google/callback',
+			proxy: true
 		},
 		(accessToken, refreshToken, profile, done) => {
 			User.findOne({ googleId: profile.id }).then(existingUser => {
