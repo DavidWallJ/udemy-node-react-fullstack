@@ -12,6 +12,7 @@ require('./services/passport');
 mongoose.connect(keys.mongoURI);
 const app = express();
 
+// app.use hookes up middlewares
 app.use(
 	cookieSession({
 		// the length of time the cookie is valid
@@ -21,7 +22,6 @@ app.use(
 		keys: [keys.cookieKey]
 	})
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 
