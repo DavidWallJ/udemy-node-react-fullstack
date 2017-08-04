@@ -1,17 +1,23 @@
 // Payments via stripe service
 import React, { Component } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 class Payment extends Component {
 	render() {
 		return (
 			<StripeCheckout
+				name="Email Assistant"
+				description="Purchase five email credits."
 				amount={500}
-				token={token => console.log(token)}
+				token={token => this.props.handleToken(token)}
 				stripeKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}
-			/>
+			>
+				<button className="btn">Add Credits</button>
+			</StripeCheckout>
 		);
 	}
 }
 
-export default Payment;
+export default connect(null, actions)(Payment);

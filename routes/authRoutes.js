@@ -1,5 +1,6 @@
 const passport = require('passport');
 
+// these routes need to be required into your index.js file
 module.exports = app => {
 	app.get(
 		'/auth/google',

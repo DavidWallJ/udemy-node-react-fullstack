@@ -13,8 +13,15 @@ export const fetchUser = () => async dispatch => {
 // 		axios.get('/api/current_user').then(res =>
 // 			dispatch({
 // 				type: 'fetchUser',
-// 				payload: res
+// 				payload: res.data
 // 			})
 // 		);
 // 	};
 // };
+
+export const handleToken = token => async dispatch => {
+	const res = await axios.post('/api/stripe', token);
+	console.log(res);
+	// we can just reuse this action
+	dispatch({ type: 'fetchUser', payload: res.data });
+};

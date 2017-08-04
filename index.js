@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 // we still need to tell passport we're using cookies
 const passport = require('passport');
+// body-parser is a middleware thus we must app.use
+const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 // the order of these require statements matter!
 require('./models/User');
@@ -12,6 +14,7 @@ require('./services/passport');
 mongoose.connect(keys.mongoURI);
 const app = express();
 
+app.use(bodyParser.json());
 // app.use hookes up middlewares
 app.use(
 	cookieSession({
@@ -29,6 +32,7 @@ app.use(passport.session());
 // and pass an argument to the exported function
 // and immediately run it
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
