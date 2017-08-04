@@ -10,14 +10,22 @@ module.exports = app => {
 		})
 	);
 
-	app.get('/auth/google/callback', passport.authenticate('google'));
+	app.get(
+		'/auth/google/callback',
+		passport.authenticate('google'),
+		(req, res) => {
+			// passport puts a redirect function on the res
+			res.redirect('/surveys');
+		}
+	);
 
 	app.get('/api/logout', (req, res) => {
 		req.logout();
 		// we should see nothing because req.user no longer exists
-		res.send(req.user);
+		res.redirect('/');
 	});
 
+	// The result of the serializeUser method in passport.js is attached to the req.user
 	app.get('/api/current_user', (req, res) => {
 		res.send(req.user);
 	});
