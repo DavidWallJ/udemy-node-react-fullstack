@@ -1,3 +1,4 @@
+// Payments via stripe service
 import React, { Component } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 
