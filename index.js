@@ -34,5 +34,21 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
+// NODE_ENV is automatically set my heroku
+if (process.env.NODE_ENV === 'production') {
+	// if express doesn't recognize the route, first check the static folder and see if what we're looking is one of those
+	// like our main.js and main.css files
+	// files required to build the site
+	app.use(express.static('client/build'));
+
+	// next, if express doesn't recognize the route just assume react router is responsible for this
+	// express will serve up the index.html file from the react build
+
+	const path = require('path');
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+	});
+}
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

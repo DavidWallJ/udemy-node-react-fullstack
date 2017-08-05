@@ -1,6 +1,0 @@
-{
-  "extends": "rallycoding",
-  "rules": {
-        "import/newline-after-import": 0
-    }
-}
