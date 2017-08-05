@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 // the order of these require statements matter!
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
@@ -33,6 +34,7 @@ app.use(passport.session());
 // and immediately run it
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 // NODE_ENV is automatically set my heroku
 if (process.env.NODE_ENV === 'production') {

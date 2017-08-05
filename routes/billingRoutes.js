@@ -1,3 +1,4 @@
+// each route must be 'required' into the root index.js
 const keys = require('../config/keys');
 // you can pull this line straight from the stripe documentation
 // https://stripe.com/docs/api/node#create_charge

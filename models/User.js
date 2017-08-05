@@ -1,3 +1,5 @@
+// you must include this somewhere in your project
+// server/index.js
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 

@@ -1,3 +1,4 @@
+// each route must be 'required' into the root index.js
 const passport = require('passport');
 
 // these routes need to be required into your index.js file
