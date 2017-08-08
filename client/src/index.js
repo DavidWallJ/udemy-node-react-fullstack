@@ -13,6 +13,16 @@ import reduxThunk from 'redux-thunk';
 
 import App from './components/App';
 import reducers from './reducers';
+import axios from 'axios';
+// it's difficult to use postman to test our backend '/api/surveys' routes because
+// according to our app we need to be signed in and have credits
+// thus, we can run axios in chrome console to access these routes
+// if we include the line of code below
+window.axios = axios;
+
+// example:
+//const survey = { title: 'my title', subject: 'my subject', recipients: 'djkindread@gmail.com', body: 'heres the body of the email'};
+// axios.post('/api/surveys', survey);
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 // the root of our app is in public/index.html

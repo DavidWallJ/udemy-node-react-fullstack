@@ -2,6 +2,8 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
+const Mailer = require('../services/Mailer');
+const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 // this is how we include a model to avoid issues with testing frameworks
 // alternatively we could just require the file
@@ -9,8 +11,16 @@ const requireCredits = require('../middlewares/requireCredits');
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
+	app.get('/api/surveys/thanks', (req, res) => {
+		res.send('Thanks for voting!');
+	});
+
+	app.post('/api/surveys/webhooks', (req, res) => {
+		console.log(req.body);
+		res.send({});
+	});
 	// the req.body will contain the survey content
-	app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
+	app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
 		const { title, subject, body, recipients } = req.body;
 		// lowercase 's' to indicate we're creating an instance of 'Survey'
 		const survey = new Survey({
@@ -25,5 +35,21 @@ module.exports = app => {
 			_user: req.user.id,
 			dateSent: Date.now()
 		});
+
+		// send email
+		const mailer = new Mailer(survey, surveyTemplate(survey));
+
+		try {
+			await mailer.send();
+			await survey.save();
+			// this is where the customer actually pays
+			req.user.credits -= 1;
+			// we save the results of this in a const so that we're sure we have the up-to-date user
+			const user = await req.user.save();
+			// sending back the user here updates the header
+			res.send(user);
+		} catch (err) {
+			res.status(422).send(err);
+		}
 	});
 };

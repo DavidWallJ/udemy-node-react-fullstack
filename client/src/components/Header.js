@@ -15,7 +15,6 @@ class Header extends Component {
 						<a href="/auth/google">Login With Google</a>
 					</li>
 				);
-				break;
 			default:
 				// we can't wrap this jsx in a div because we're dropping it into a list
 				// this the array
